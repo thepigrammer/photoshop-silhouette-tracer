@@ -19,6 +19,4 @@ for y in range(y, 1159, 3):
         if pyautogui.pixelMatchesColor(x, y, (0, 0, 0), tolerance=10):
             pyautogui.click()
             checkRow(x, y)
-        else:
-
     x = 82
