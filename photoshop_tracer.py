@@ -2,7 +2,6 @@ import pyautogui
 
 def checkRow(x, y):
     if pyautogui.pixelMatchesColor(x+1, y, (0, 0, 0), tolerance=10):
-        pyautogui.mouseDown()
         x += 1
         pyautogui.click(x, y)
         checkRow(x, y)
