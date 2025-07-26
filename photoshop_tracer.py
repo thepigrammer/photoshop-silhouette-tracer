@@ -5,34 +5,44 @@ def checkDiagonals(x, y):
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
-        tempX -= 5
-        tempY -= 5
+        tempX -= 50
+        tempY -= 50
+    while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
+        tempX += 1
+        tempY += 1
     fourSpots.append([tempX, tempY])
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
-        tempX += 5
-        tempY -= 5
+        tempX += 50
+        tempY -= 50
+    while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
+        tempX -= 1
+        tempY += 1
     fourSpots.append([tempX, tempY])
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
-        tempX -= 5
-        tempY += 5
+        tempX -= 50
+        tempY += 50
+    while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
+        tempX += 1
+        tempY -= 1
     fourSpots.append([tempX, tempY])
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
-        tempX += 5
-        tempY += 5
+        tempX += 50
+        tempY += 50
+    while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
+        tempX -= 1
+        tempY -= 1
     fourSpots.append([tempX, tempY])
     tempX = x
     tempY = y
     for spot in fourSpots:
-        pyautogui.moveTo(x, y)
-        pyautogui.mouseDown()
-        pyautogui.moveTo(spot[0], spot[1], 0.1)
-        pyautogui.mouseUp()
+        pyautogui.click(spot[0], spot[1])
+        
 
 
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
