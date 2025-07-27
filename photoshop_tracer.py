@@ -1,5 +1,6 @@
 import pyautogui
 import random
+import time
 
 def checkDiagonals(x, y):
     tempX = x
@@ -86,6 +87,8 @@ def checkDiagonals(x, y):
     tempY = y
 
 
+start = time.time()
+
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
 
 x = 82
@@ -96,3 +99,5 @@ for y in range(y, 1159, 20):
         if pyautogui.pixelMatchesColor(x, y, (0, 0, 0), tolerance=10):
             checkDiagonals(x, y)
     x = 82
+
+print(((time.time() - start) / 60), "minutes")
