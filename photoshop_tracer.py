@@ -1,7 +1,7 @@
 import pyautogui
+import random
 
 def checkDiagonals(x, y):
-    fourSpots = []
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
@@ -10,7 +10,18 @@ def checkDiagonals(x, y):
     while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
         tempX += 1
         tempY += 1
-    fourSpots.append([tempX, tempY])
+    tempX += 3
+    tempY += 3
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseDown()
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.mouseUp()
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
@@ -19,7 +30,18 @@ def checkDiagonals(x, y):
     while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
         tempX -= 1
         tempY += 1
-    fourSpots.append([tempX, tempY])
+    tempX -= 3
+    tempY += 3
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseDown()
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.mouseUp()
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
@@ -28,7 +50,18 @@ def checkDiagonals(x, y):
     while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
         tempX += 1
         tempY -= 1
-    fourSpots.append([tempX, tempY])
+    tempX += 3
+    tempY -= 3
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseDown()
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.mouseUp()
     tempX = x
     tempY = y
     while pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
@@ -37,12 +70,20 @@ def checkDiagonals(x, y):
     while not pyautogui.pixelMatchesColor(tempX, tempY, (0, 0, 0), tolerance=10):
         tempX -= 1
         tempY -= 1
-    fourSpots.append([tempX, tempY])
+    tempX -= 3
+    tempY -= 3
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseDown()
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.mouseUp()
     tempX = x
     tempY = y
-    for spot in fourSpots:
-        pyautogui.click(spot[0], spot[1])
-        
 
 
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
