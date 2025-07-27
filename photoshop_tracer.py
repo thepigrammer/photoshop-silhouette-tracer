@@ -100,4 +100,6 @@ for y in range(y, 1159, 20):
             checkDiagonals(x, y)
     x = 82
 
+pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+
 print(((time.time() - start) / 60), "minutes")
