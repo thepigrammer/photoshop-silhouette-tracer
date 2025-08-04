@@ -99,25 +99,32 @@ def checkDiagonals(x, y):
     tempX = x
     tempY = y
 
+# Ask the user how many images will be traced.
+times = int(input("How many image tabs are there? "))
+
 # Record the start time to print total runtime later.
 start = time.time()
 
 # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
 
-# Start at the top left of the image window in photoshop.
-x = 82
-y = 120
-
-# Store the current screen as an image.
-image = pyautogui.screenshot()
-
 # Go through the image window in the screenshot, drawing diagonally from each black pixel found.
-for y in range(y, 1159, 20):
-    for x in range(x, 2209, 100):
-        if image.getpixel((x, y)) == (0, 0, 0):
-            checkDiagonals(x, y)
+for _ in range(times):
     x = 82
+    y = 120
+    image = pyautogui.screenshot()
+    for y in range(y, 1159, 20):
+        for x in range(x, 2209, 100):
+            if image.getpixel((x, y)) == (0, 0, 0):
+                checkDiagonals(x, y)
+        x = 82
+    pyautogui.keyDown("ctrl")
+    time.sleep(1)
+    pyautogui.press("tab")
+    time.sleep(1)
+    pyautogui.keyUp("ctrl")
+    
+
 
 # Hide photoshop back into taskbar.
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
