@@ -140,7 +140,8 @@ if answer == "trace":
                 for x in range(x, 2209, i):
 
                     # Check current screen for untraced pixels.
-                    if image.getpixel((x, y)) == (0, 0, 0):
+                    r, g, b = image.getpixel((x, y))
+                    if r < 10 and g < 10 and b < 10:
                         checkDiagonals(x, y, originalImage)
                         image = pyautogui.screenshot()
                 x = 82
