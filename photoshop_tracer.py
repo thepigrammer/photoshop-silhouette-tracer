@@ -105,7 +105,7 @@ while True:
     if answer == "trace" or answer == "layer" or answer == "place":
         break
 
-# Ask the user how many images will be traced.
+# Ask the user how many images/tabs are involved.
 times = int(input("How many image tabs are there? "))
 
 # If user wants to trace silouette:
