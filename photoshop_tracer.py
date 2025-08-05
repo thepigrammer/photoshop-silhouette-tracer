@@ -190,8 +190,9 @@ elif answer == "place":
 
         # Click "File", then "Place".
         pyautogui.click(64, 22)
-        pyautogui.click(148, 336)
         time.sleep(0.1)
+        pyautogui.click(148, 336)
+        time.sleep(0.5)
 
         # Click on the first image in the top left of file view.
         pyautogui.click(277, 179)
@@ -205,6 +206,7 @@ elif answer == "place":
 
         # Place image and name its layer.
         pyautogui.press("Enter")
+        time.sleep(0.1)
         pyautogui.press("Enter")
         pyautogui.doubleClick(2364, 172)
         pyautogui.write(name + '\n')
