@@ -2,8 +2,9 @@ import pyautogui
 import random
 import time
 
-# Draws 4 ways diagonally from given coordinate to edge of silouette.
-def checkDiagonals(x, y):
+# Draws 4 ways diagonally from given coordinate to edge of silouette. 
+# The original, untraced screenshot should be passed to the "image" parameter.
+def checkDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
@@ -121,15 +122,23 @@ if answer == "trace":
     # Go through the image window in the screenshot, drawing diagonally from each black pixel found, for each tab.
     for _ in range(times):
         
-        # Start at top left of image window and trace silouette.
-        x = 82
-        y = 120
-        image = pyautogui.screenshot()
-        for y in range(y, 1159, 20):
-            for x in range(x, 2209, 100):
-                if image.getpixel((x, y)) == (0, 0, 0):
-                    checkDiagonals(x, y)
+        # Store original silouette for drawing diagonals to edge with checkDiagonals().
+        originalImage = image = pyautogui.screenshot()
+
+        # Go through image window 4 times, getting more precise with each pass.
+        for i in (100, 50, 25, 1):
+            
+            # Start at top left of image window and trace silouette.
             x = 82
+            y = 120
+            for y in range(y, 1159, i):
+                for x in range(x, 2209, i):
+
+                    # Check current screen for untraced pixels.
+                    if image.getpixel((x, y)) == (0, 0, 0):
+                        checkDiagonals(x, y, originalImage)
+                        image = pyautogui.screenshot()
+                x = 82
         
         # Next tab.
         pyautogui.keyDown("ctrl")
