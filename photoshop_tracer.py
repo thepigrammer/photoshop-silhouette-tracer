@@ -102,8 +102,13 @@ def checkDiagonals(x, y, image):
 
 # Find out what the user wants to do.
 while True:
-    answer = input('\nTrace over silouette: "trace"\nAdd a blank layer: "layer"\nRename layer: "rename"\nPlace an image: "place"\n\nWhat do you want to do? ')
-    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place":
+    print('\nTrace over silouette: "trace"')
+    print('Add a blank layer: "layer"')
+    print('Rename layer: "rename"')
+    print('Place an image: "place"')
+    print('Save after opening photoshop: "save"')
+    answer = input('\nWhat do you want to do? ')
+    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place" or answer == "save":
         break
 
 # Ask the user how many images/tabs are involved.
@@ -229,6 +234,34 @@ elif answer == "place":
         pyautogui.press("tab")
         time.sleep(0.1)
         pyautogui.keyUp("ctrl")
+
+# If user wants to save photoshop files for the first time after opening photoshop:
+if answer == "save":
+
+    # Record the start time to print total runtime later.
+    start = time.time()
+
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
+    
+    for _ in range(times):
+            pyautogui.keyDown("ctrl")
+            time.sleep(0.1)
+            pyautogui.press("s")
+            time.sleep(0.1)
+            pyautogui.keyUp("ctrl")
+            time.sleep(0.1)
+            pyautogui.press("Enter")
+            time.sleep(0.1)
+            pyautogui.press("y")
+            time.sleep(0.1)
+            pyautogui.keyDown("ctrl")
+
+            time.sleep(0.1)
+            pyautogui.press("tab")
+            time.sleep(0.1)
+            pyautogui.keyUp("ctrl")
 
 
 # Hide photoshop back into taskbar.
