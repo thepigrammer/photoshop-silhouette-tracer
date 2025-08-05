@@ -101,8 +101,8 @@ def checkDiagonals(x, y):
 
 # Find out what the user wants to do.
 while True:
-    answer = input('\nTrace over silouette: "trace"\nAdd a blank layer: "layer"\nPlace an image: "place"\n\nWhat do you want to do? ')
-    if answer == "trace" or answer == "layer" or answer == "place":
+    answer = input('\nTrace over silouette: "trace"\nAdd a blank layer: "layer"\nRename layer: "rename"\nPlace an image: "place"\n\nWhat do you want to do? ')
+    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place":
         break
 
 # Ask the user how many images/tabs are involved.
@@ -137,8 +137,8 @@ if answer == "trace":
         time.sleep(1)
         pyautogui.keyUp("ctrl")
 
-# If user wants to add blank layer:
-elif answer == "layer":
+# If user wants to add blank layer or rename layer:
+elif answer == "layer" or answer == "rename":
     name = input("What do you want to name the layers? ")
     
     # Record the start time to print total runtime later.
@@ -147,11 +147,12 @@ elif answer == "layer":
     # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
     pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
     
-    # Add and name the layer for each tab.
+    # Add and/or name the layer for each tab.
     for _ in range(times):
 
         # Click to add new layer.
-        pyautogui.click(2249, 109)
+        if answer == "layer":
+            pyautogui.click(2249, 109)
 
         # Click to name layer, type the name, then "Enter" to submit it.
         pyautogui.doubleClick(2364, 172)
