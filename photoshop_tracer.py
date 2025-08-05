@@ -116,6 +116,7 @@ if answer == "trace":
 
     # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
     pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
 
     # Go through the image window in the screenshot, drawing diagonally from each black pixel found, for each tab.
     for _ in range(times):
@@ -146,6 +147,7 @@ elif answer == "layer" or answer == "rename":
 
     # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
     pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
     
     # Add and/or name the layer for each tab.
     for _ in range(times):
@@ -181,6 +183,7 @@ elif answer == "place":
 
     # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
     pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
 
     # Place image and new its layer for each tab.
     for i in range(times):
@@ -218,6 +221,7 @@ elif answer == "place":
 
 
 # Hide photoshop back into taskbar.
+time.sleep(0.5)
 pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
 
 # Print runtime in minutes.
