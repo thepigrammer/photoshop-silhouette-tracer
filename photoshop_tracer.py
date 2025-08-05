@@ -99,31 +99,121 @@ def checkDiagonals(x, y):
     tempX = x
     tempY = y
 
+# Find out what the user wants to do.
+while True:
+    answer = input('\nTrace over silouette: "trace"\nAdd a blank layer: "layer"\nPlace an image: "place"\n\nWhat do you want to do? ')
+    if answer == "trace" or answer == "layer" or answer == "place":
+        break
+
 # Ask the user how many images will be traced.
 times = int(input("How many image tabs are there? "))
 
-# Record the start time to print total runtime later.
-start = time.time()
+# If user wants to trace silouette:
+if answer == "trace":
 
-# Click the photoshop elements icon on the taskbar (window must be set up and opened already).
-pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    # Record the start time to print total runtime later.
+    start = time.time()
 
-# Go through the image window in the screenshot, drawing diagonally from each black pixel found.
-for _ in range(times):
-    x = 82
-    y = 120
-    image = pyautogui.screenshot()
-    for y in range(y, 1159, 20):
-        for x in range(x, 2209, 100):
-            if image.getpixel((x, y)) == (0, 0, 0):
-                checkDiagonals(x, y)
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+
+    # Go through the image window in the screenshot, drawing diagonally from each black pixel found, for each tab.
+    for _ in range(times):
+        
+        # Start at top left of image window and trace silouette.
         x = 82
-    pyautogui.keyDown("ctrl")
-    time.sleep(1)
-    pyautogui.press("tab")
-    time.sleep(1)
-    pyautogui.keyUp("ctrl")
+        y = 120
+        image = pyautogui.screenshot()
+        for y in range(y, 1159, 20):
+            for x in range(x, 2209, 100):
+                if image.getpixel((x, y)) == (0, 0, 0):
+                    checkDiagonals(x, y)
+            x = 82
+        
+        # Next tab.
+        pyautogui.keyDown("ctrl")
+        time.sleep(1)
+        pyautogui.press("tab")
+        time.sleep(1)
+        pyautogui.keyUp("ctrl")
+
+# If user wants to add blank layer:
+elif answer == "layer":
+    name = input("What do you want to name the layers? ")
     
+    # Record the start time to print total runtime later.
+    start = time.time()
+
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    
+    # Add and name the layer for each tab.
+    for _ in range(times):
+
+        # Click to add new layer.
+        pyautogui.click(2249, 109)
+
+        # Click to name layer, type the name, then "Enter" to submit it.
+        pyautogui.doubleClick(2364, 172)
+        pyautogui.write(name + '\n')
+
+        # Needs extra time to catch up for longer names.
+        time.sleep(0.05 * len(name))
+
+        # Next tab.
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("tab")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
+
+    # Needs extra time at end to catch up/stop bug.
+    time.sleep(3)
+
+# If user wants to place an image as a new layer:
+elif answer == "place":
+    name = input("What do you want to name the layers? ")
+    skips = int(input("How many images should be skipped between each new one? "))
+
+    # Record the start time to print total runtime later.
+    start = time.time()
+
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+
+    # Place image and new its layer for each tab.
+    for i in range(times):
+
+        # Click "File", then "Place".
+        pyautogui.click(64, 22)
+        pyautogui.click(148, 336)
+        time.sleep(0.1)
+
+        # Click on the first image in the top left of file view.
+        pyautogui.click(277, 179)
+
+        # Choose file from first one, dependant on the tab (i).
+        for _ in range(i):
+            
+            # Go to next image, dependant on the skips requested.
+            for _ in range(1 + skips):
+                pyautogui.press("right")
+
+        # Place image and name its layer.
+        pyautogui.press("Enter")
+        pyautogui.press("Enter")
+        pyautogui.doubleClick(2364, 172)
+        pyautogui.write(name + '\n')
+
+        # Needs extra time to catch up for longer names.
+        time.sleep(0.05 * len(name))
+
+        # Next tab.
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("tab")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
 
 
 # Hide photoshop back into taskbar.
