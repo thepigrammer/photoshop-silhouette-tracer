@@ -2,7 +2,7 @@ import pyautogui
 import random
 import time
 
-# Draws 4 ways diagonally from given coordinate to edge of silouette. 
+# Draws 4 ways diagonally from given coordinate to edge of silhouette. 
 # The original, untraced screenshot should be passed to the "image" parameter.
 def checkDiagonals(x, y, image):
     tempX = x
@@ -102,20 +102,23 @@ def checkDiagonals(x, y, image):
 
 # Find out what the user wants to do.
 while True:
-    print('\nTrace over silouette: "trace"')
+    print('\nTrace over silhouette: "trace"')
     print('Add a blank layer: "layer"')
     print('Rename layer: "rename"')
     print('Place an image: "place"')
     print('Save after opening photoshop: "save"')
     print('Hide or unhide a layer: "hide"')
+    print('Zoom in on silhouette: "zoom"')
     answer = input('\nWhat do you want to do? ')
-    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place" or answer == "save" or answer == "hide":
+    if (answer == "trace" or answer == "layer" or answer == "rename" or 
+        answer == "place" or answer == "save" or answer == "hide" or
+        answer == "zoom"):
         break
 
 # Ask the user how many images/tabs are involved.
 times = int(input("How many image tabs are there? "))
 
-# If user wants to trace silouette:
+# If user wants to trace silhouette:
 if answer == "trace":
 
     # Record the start time to print total runtime later.
@@ -128,27 +131,25 @@ if answer == "trace":
     # Go through the image window in the screenshot, drawing diagonally from each black pixel found, for each tab.
     for _ in range(times):
         
-        # Store original silouette for drawing diagonals to edge with checkDiagonals().
+        # Store original silhouette for drawing diagonals to edge with checkDiagonals().
         originalImage = image = pyautogui.screenshot()
 
         # Go through image window 4 times, getting more precise with each pass.
         for i in (100, 50, 25, 1):
             
-            # Start at top left of image window and trace silouette.
-            x = 82
-            y = 120
-            for y in range(y, 1159, i):
-                for x in range(x, 2209, i):
+            # Start at top left of image window and trace silhouette.
+            for y in range(120, 1159, i):
+                for x in range(82, 2209, i):
 
                     # Check current screen for untraced pixels.
                     r, g, b = image.getpixel((x, y))
                     if r < 10 and g < 10 and b < 10:
                         checkDiagonals(x, y, originalImage)
                         image = pyautogui.screenshot()
-                x = 82
         
         # Next tab.
         time.sleep(3)
+        pyautogui.moveTo(82, 120)
         pyautogui.keyDown("ctrl")
         time.sleep(1)
         pyautogui.press("tab")
@@ -291,6 +292,75 @@ if answer == "hide":
         pyautogui.keyUp("ctrl")
         time.sleep(0.1)
 
+# If user wants to zoom in on silhouette:
+if answer == "zoom":
+
+    # Record the start time to print total runtime later.
+    start = time.time()
+
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
+
+    for _ in range(times):
+        image = pyautogui.screenshot()
+
+        # Find highest y value.
+        top = 0
+        for y in range(120, 1159, 1):
+            for x in range(82, 2209, 1):
+                r, g, b = image.getpixel((x, y))
+                if r < 10 and g < 10 and b < 10:
+                    top = y - 5
+                    break
+            if top > 0:
+                break
+        
+        # Find lowest y value:
+        bottom = 0
+        for y in range(1159, 120, -1):
+            for x in range(82, 2209, 1):
+                r, g, b = image.getpixel((x, y))
+                if r < 10 and g < 10 and b < 10:
+                    bottom = y + 5
+                    break
+            if bottom > 0:
+                break
+
+        # Find leftmost x value:
+        left = 0
+        for x in range(82, 2209, 1):
+            for y in range(120, 1159, 1):
+                r, g, b = image.getpixel((x, y))
+                if r < 10 and g < 10 and b < 10:
+                    left = x - 5
+                    break
+            if left > 0:
+                break
+
+        # Find rightmost x value:
+        right = 0
+        for x in range(2209, 82, -1):
+            for y in range(120, 1159, 1):
+                r, g, b = image.getpixel((x, y))
+                if r < 10 and g < 10 and b < 10:
+                    right = x + 5
+                    break
+            if right > 0:
+                break
+        
+        # Zoom in.
+        pyautogui.mouseDown(x=left, y=top)
+        pyautogui.moveTo(right, bottom)
+        pyautogui.mouseUp()
+
+        # Change tabs.
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("tab")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
+        time.sleep(0.1)
 
 # Hide photoshop back into taskbar.
 time.sleep(0.5)
