@@ -152,6 +152,7 @@ if answer == "trace":
         pyautogui.press("tab")
         time.sleep(1)
         pyautogui.keyUp("ctrl")
+        time.sleep(3)
 
 # If user wants to add blank layer or rename layer:
 elif answer == "layer" or answer == "rename":
