@@ -210,7 +210,7 @@ elif answer == "place":
         pyautogui.click(64, 22)
         time.sleep(0.1)
         pyautogui.click(148, 336)
-        time.sleep(0.5)
+        time.sleep(1)
 
         # Click on the first image in the top left of file view.
         pyautogui.click(277, 179)
@@ -221,11 +221,14 @@ elif answer == "place":
             # Go to next image, dependant on the skips requested.
             for _ in range(1 + skips):
                 pyautogui.press("right")
-
+        
+        time.sleep(0.3)
+        
         # Place image and name its layer.
         pyautogui.press("Enter")
-        time.sleep(0.1)
+        time.sleep(0.3)
         pyautogui.press("Enter")
+        time.sleep(0.1)
         pyautogui.doubleClick(2364, 172)
         pyautogui.write(name + '\n')
 
