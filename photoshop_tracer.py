@@ -107,8 +107,9 @@ while True:
     print('Rename layer: "rename"')
     print('Place an image: "place"')
     print('Save after opening photoshop: "save"')
+    print('Hide or unhide a layer: "hide"')
     answer = input('\nWhat do you want to do? ')
-    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place" or answer == "save":
+    if answer == "trace" or answer == "layer" or answer == "rename" or answer == "place" or answer == "save" or answer == "hide":
         break
 
 # Ask the user how many images/tabs are involved.
@@ -147,12 +148,13 @@ if answer == "trace":
                 x = 82
         
         # Next tab.
+        time.sleep(3)
         pyautogui.keyDown("ctrl")
         time.sleep(1)
         pyautogui.press("tab")
         time.sleep(1)
         pyautogui.keyUp("ctrl")
-        time.sleep(3)
+        time.sleep(1)
 
 # If user wants to add blank layer or rename layer:
 elif answer == "layer" or answer == "rename":
@@ -258,12 +260,33 @@ if answer == "save":
             time.sleep(0.1)
             pyautogui.press("y")
             time.sleep(0.1)
-            pyautogui.keyDown("ctrl")
 
+            pyautogui.keyDown("ctrl")
             time.sleep(0.1)
             pyautogui.press("tab")
             time.sleep(0.1)
             pyautogui.keyUp("ctrl")
+
+# If user wants to hide or unhide a layer:
+if answer == "hide":
+    layer = int(input('Top layer is "1". Which layer do you want to hide/unhide? '))
+
+    # Record the start time to print total runtime later.
+    start = time.time()
+
+    # Click the photoshop elements icon on the taskbar (window must be set up and opened already).
+    pyautogui.click(pyautogui.locateCenterOnScreen("photoshop_icon.png"))
+    time.sleep(0.5)
+
+    for _ in range(times):
+        pyautogui.click(2245, 170 + (39 * (layer - 1)))
+        
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("tab")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
+        time.sleep(0.1)
 
 
 # Hide photoshop back into taskbar.
