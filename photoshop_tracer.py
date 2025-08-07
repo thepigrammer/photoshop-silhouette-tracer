@@ -146,6 +146,26 @@ if answer == "trace":
                     if r < 10 and g < 10 and b < 10:
                         checkDiagonals(x, y, originalImage)
                         image = pyautogui.screenshot()
+            
+        # Save in case photoshop crashes.
+        time.sleep(1)
+        pyautogui.keyDown("ctrl")
+        time.sleep(0.1)
+        pyautogui.press("s")
+        time.sleep(0.1)
+        pyautogui.keyUp("ctrl")
+        time.sleep(2)
+        pyautogui.press("Enter")
+        time.sleep(1)
+        pyautogui.press("y")
+        time.sleep(1)
+
+        # Make sure tool is brush.
+        pyautogui.press("y")
+        time.sleep(1)
+        pyautogui.press("b")
+        time.sleep(1)
+        
         
         # Next tab.
         time.sleep(3)
