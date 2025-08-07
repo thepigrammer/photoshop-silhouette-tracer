@@ -35,7 +35,7 @@ def main():
         # Go through the image window in the screenshot, drawing diagonally from each black pixel found, for each tab.
         for _ in range(times):
             
-            # Store original silhouette for drawing diagonals to edge with checkDiagonals().
+            # Store original silhouette for drawing diagonals to edge with drawDiagonals().
             originalImage = image = pyautogui.screenshot()
 
             # Go through image window 4 times, getting more precise with each pass.
@@ -45,10 +45,10 @@ def main():
                 for y in range(120, 1159, i):
                     for x in range(82, 2209, i):
 
-                        # Check current screen for untraced pixels.
+                        # Check current screen for untraced pixels and trace them.
                         r, g, b = image.getpixel((x, y))
                         if r < 10 and g < 10 and b < 10:
-                            checkDiagonals(x, y, originalImage)
+                            drawDiagonals(x, y, originalImage)
                             image = pyautogui.screenshot()
                 
             # Save in case photoshop crashes.
@@ -296,7 +296,7 @@ def main():
 
 # Draws 4 ways diagonally from given coordinate to edge of silhouette. 
 # The original, untraced screenshot should be passed to the "image" parameter.
-def checkDiagonals(x, y, image):
+def drawDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
