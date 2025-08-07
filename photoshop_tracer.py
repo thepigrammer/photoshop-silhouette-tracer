@@ -167,7 +167,7 @@ def main():
             time.sleep(0.1)
             pyautogui.keyUp("ctrl")
 
-    # If user wants to save photoshop files for the first time after opening photoshop:
+    # If user wants to save opened photoshop files:
     elif answer == "save":
 
         # Record the start time to print total runtime later.
