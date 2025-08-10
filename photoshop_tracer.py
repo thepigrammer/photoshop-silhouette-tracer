@@ -47,30 +47,13 @@ def main():
 
                         # Check current screen for untraced pixels and trace them.
                         r, g, b = image.getpixel((x, y))
-                        if r < 10 and g < 10 and b < 10:
+                        if r < 50 and g < 50 and b < 50:
                             drawDiagonals(x, y, originalImage)
                             image = pyautogui.screenshot()
                 
-            # Save in case photoshop crashes.
-            time.sleep(1)
-            pyautogui.keyDown("ctrl")
-            time.sleep(0.1)
-            pyautogui.press("s")
-            time.sleep(0.1)
-            pyautogui.keyUp("ctrl")
-            time.sleep(2)
-            pyautogui.press("Enter")
-            time.sleep(1)
-            pyautogui.press("y")
-            time.sleep(1)
-
-            # Make sure tool is brush.
-            pyautogui.press("y")
-            time.sleep(1)
-            pyautogui.press("b")
-            time.sleep(1)
-            
-            
+                # Save after each pass in case photoshop crashes.
+                save()
+                 
             # Next tab.
             time.sleep(3)
             pyautogui.moveTo(82, 120)
@@ -234,7 +217,7 @@ def main():
             for y in range(120, 1159, 1):
                 for x in range(82, 2209, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 10 and g < 10 and b < 10:
+                    if r < 50 and g < 50 and b < 50:
                         top = y - 5
                         break
                 if top > 0:
@@ -245,7 +228,7 @@ def main():
             for y in range(1159, 120, -1):
                 for x in range(82, 2209, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 10 and g < 10 and b < 10:
+                    if r < 50 and g < 50 and b < 50:
                         bottom = y + 5
                         break
                 if bottom > 0:
@@ -256,7 +239,7 @@ def main():
             for x in range(82, 2209, 1):
                 for y in range(120, 1159, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 10 and g < 10 and b < 10:
+                    if r < 50 and g < 50 and b < 50:
                         left = x - 5
                         break
                 if left > 0:
@@ -267,16 +250,17 @@ def main():
             for x in range(2209, 82, -1):
                 for y in range(120, 1159, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 10 and g < 10 and b < 10:
+                    if r < 50 and g < 50 and b < 50:
                         right = x + 5
                         break
                 if right > 0:
                     break
             
-            # Zoom in.
-            pyautogui.mouseDown(x=left, y=top)
-            pyautogui.moveTo(right, bottom)
-            pyautogui.mouseUp()
+            # Zoom in if silhouette found.
+            if right > 0:
+                pyautogui.mouseDown(x=left, y=top)
+                pyautogui.moveTo(right, bottom)
+                pyautogui.mouseUp()
 
             # Change tabs.
             pyautogui.keyDown("ctrl")
@@ -294,17 +278,38 @@ def main():
     print(((time.time() - start) / 60), "minutes")
 
 
+def save():
+    # Save (potentially in file view if first time saving since opening in photoshop).
+    time.sleep(1)
+    pyautogui.keyDown("ctrl")
+    time.sleep(0.1)
+    pyautogui.press("s")
+    time.sleep(0.1)
+    pyautogui.keyUp("ctrl")
+    time.sleep(2)
+    pyautogui.press("Enter")
+    time.sleep(1)
+    pyautogui.press("y")
+    time.sleep(1)
+
+    # Make sure tool is brush.
+    pyautogui.press("y")
+    time.sleep(1)
+    pyautogui.press("b")
+    time.sleep(1)
+
+
 # Draws 4 ways diagonally from given coordinate to edge of silhouette. 
 # The original, untraced screenshot should be passed to the "image" parameter.
 def drawDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 10 and g < 10 and b < 10:
+    while r < 50 and g < 50 and b < 50:
         tempX -= 2
         tempY -= 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 10 and g < 10 and b < 10):
+    while not (r < 50 and g < 50 and b < 50):
         tempX += 1
         tempY += 1
         r, g, b = image.getpixel((tempX, tempY))
@@ -323,11 +328,11 @@ def drawDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 10 and g < 10 and b < 10:
+    while r < 50 and g < 50 and b < 50:
         tempX += 2
         tempY -= 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 10 and g < 10 and b < 10):
+    while not (r < 50 and g < 50 and b < 50):
         tempX -= 1
         tempY += 1
         r, g, b = image.getpixel((tempX, tempY))
@@ -346,11 +351,11 @@ def drawDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 10 and g < 10 and b < 10:
+    while r < 50 and g < 50 and b < 50:
         tempX -= 2
         tempY += 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 10 and g < 10 and b < 10):
+    while not (r < 50 and g < 50 and b < 50):
         tempX += 1
         tempY -= 1
         r, g, b = image.getpixel((tempX, tempY))
@@ -369,11 +374,11 @@ def drawDiagonals(x, y, image):
     tempX = x
     tempY = y
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 10 and g < 10 and b < 10:
+    while r < 50 and g < 50 and b < 50:
         tempX += 2
         tempY += 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 10 and g < 10 and b < 10):
+    while not (r < 50 and g < 50 and b < 50):
         tempX -= 1
         tempY -= 1
         r, g, b = image.getpixel((tempX, tempY))
