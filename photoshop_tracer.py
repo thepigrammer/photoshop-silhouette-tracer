@@ -39,17 +39,36 @@ def main():
             originalImage = image = pyautogui.screenshot()
 
             # Go through image window 4 times, getting more precise with each pass.
-            for i in (100, 50, 25, 1):
+            # "direction" variable is used to alternate between passing through the window from top down and bottom up.
+            direction = True
+            for i in (200, 100, 50, 1):
                 
-                # Start at top left of image window and trace silhouette.
-                for y in range(120, 1159, i):
-                    for x in range(82, 2209, i):
+                if direction:
 
-                        # Check current screen for untraced pixels and trace them.
-                        r, g, b = image.getpixel((x, y))
-                        if r < 50 and g < 50 and b < 50:
-                            drawDiagonals(x, y, originalImage)
-                            image = pyautogui.screenshot()
+                    # Start at top left of image window and trace silhouette.
+                    for y in range(120, 1159, i):
+                        for x in range(82, 2209, i):
+
+                            # Check current screen for untraced pixels and trace them.
+                            r, g, b = image.getpixel((x, y))
+                            if r < 10 and g < 10 and b < 10:
+                                drawDiagonals(x, y, originalImage)
+                                drawDiagonals(x, y, originalImage)
+                                image = pyautogui.screenshot()
+                    direction = False
+
+                else: 
+                    # Start at bottom right of image window and trace silhouette.
+                    for y in range(1159, 120, i * -1):
+                        for x in range(2209, 82, i * -1):
+
+                            # Check current screen for untraced pixels and trace them.
+                            r, g, b = image.getpixel((x, y))
+                            if r < 10 and g < 10 and b < 10:
+                                drawDiagonals(x, y, originalImage)
+                                drawDiagonals(x, y, originalImage)
+                                image = pyautogui.screenshot()
+                    direction = True
                 
                 # Save after each pass in case photoshop crashes.
                 save()
@@ -217,7 +236,7 @@ def main():
             for y in range(120, 1159, 1):
                 for x in range(82, 2209, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 50 and g < 50 and b < 50:
+                    if r < 10 and g < 10 and b < 10:
                         top = y - 5
                         break
                 if top > 0:
@@ -228,7 +247,7 @@ def main():
             for y in range(1159, 120, -1):
                 for x in range(82, 2209, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 50 and g < 50 and b < 50:
+                    if r < 10 and g < 10 and b < 10:
                         bottom = y + 5
                         break
                 if bottom > 0:
@@ -239,7 +258,7 @@ def main():
             for x in range(82, 2209, 1):
                 for y in range(120, 1159, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 50 and g < 50 and b < 50:
+                    if r < 10 and g < 10 and b < 10:
                         left = x - 5
                         break
                 if left > 0:
@@ -250,7 +269,7 @@ def main():
             for x in range(2209, 82, -1):
                 for y in range(120, 1159, 1):
                     r, g, b = image.getpixel((x, y))
-                    if r < 50 and g < 50 and b < 50:
+                    if r < 10 and g < 10 and b < 10:
                         right = x + 5
                         break
                 if right > 0:
@@ -299,93 +318,57 @@ def save():
     time.sleep(1)
 
 
-# Draws 4 ways diagonally from given coordinate to edge of silhouette. 
+# Draws 4 ways diagonally (passes over twice, back and forth) from given coordinate to edge of silhouette. 
 # The original, untraced screenshot should be passed to the "image" parameter.
 def drawDiagonals(x, y, image):
+
+    # Start at original black pixel.
     tempX = x
     tempY = y
+
+    # Find top left edge.
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 50 and g < 50 and b < 50:
+    while r < 10 and g < 10 and b < 10:
         tempX -= 2
         tempY -= 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 50 and g < 50 and b < 50):
-        tempX += 1
-        tempY += 1
-        r, g, b = image.getpixel((tempX, tempY))
-    tempX += 3
-    tempY += 3
+    tempX += 1
+    tempY += 1
+    r, g, b = image.getpixel((tempX + 3, tempY + 3))
+    if r < 10 and g < 10 and b < 10: 
+        tempX += 3
+        tempY += 3
+    edgeX, edgeY = tempX, tempY
+
+    # Start at original pixel, then drag to top left edge.
     pyautogui.moveTo(x, y)
     pyautogui.mouseDown()
     pyautogui.moveTo(tempX, tempY)
+
+    # Scribble at edge.
     tempX -= 2 + random.randint(0, 3)
     tempY -= 2 + random.randint(0, 3)
     pyautogui.moveTo(tempX, tempY)
     tempX += 2 + random.randint(0, 3)
     tempY += 2 + random.randint(0, 3)
     pyautogui.moveTo(tempX, tempY)
-    pyautogui.mouseUp()
-    tempX = x
-    tempY = y
+    pyautogui.moveTo(edgeX, edgeY)
+
+    # Find bottom right edge.
     r, g, b = image.getpixel((tempX, tempY))
-    while r < 50 and g < 50 and b < 50:
-        tempX += 2
-        tempY -= 2
-        r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 50 and g < 50 and b < 50):
-        tempX -= 1
-        tempY += 1
-        r, g, b = image.getpixel((tempX, tempY))
-    tempX -= 3
-    tempY += 3
-    pyautogui.moveTo(x, y)
-    pyautogui.mouseDown()
-    pyautogui.moveTo(tempX, tempY)
-    tempX += 2 + random.randint(0, 3)
-    tempY -= 2 + random.randint(0, 3)
-    pyautogui.moveTo(tempX, tempY)
-    tempX -= 2 + random.randint(0, 3)
-    tempY += 2 + random.randint(0, 3)
-    pyautogui.moveTo(tempX, tempY)
-    pyautogui.mouseUp()
-    tempX = x
-    tempY = y
-    r, g, b = image.getpixel((tempX, tempY))
-    while r < 50 and g < 50 and b < 50:
-        tempX -= 2
-        tempY += 2
-        r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 50 and g < 50 and b < 50):
-        tempX += 1
-        tempY -= 1
-        r, g, b = image.getpixel((tempX, tempY))
-    tempX += 3
-    tempY -= 3
-    pyautogui.moveTo(x, y)
-    pyautogui.mouseDown()
-    pyautogui.moveTo(tempX, tempY)
-    tempX -= 2 + random.randint(0, 3)
-    tempY += 2 + random.randint(0, 3)
-    pyautogui.moveTo(tempX, tempY)
-    tempX += 2 + random.randint(0, 3)
-    tempY -= 2 + random.randint(0, 3)
-    pyautogui.moveTo(tempX, tempY)
-    pyautogui.mouseUp()
-    tempX = x
-    tempY = y
-    r, g, b = image.getpixel((tempX, tempY))
-    while r < 50 and g < 50 and b < 50:
+    while r < 10 and g < 10 and b < 10:
         tempX += 2
         tempY += 2
         r, g, b = image.getpixel((tempX, tempY))
-    while not (r < 50 and g < 50 and b < 50):
-        tempX -= 1
-        tempY -= 1
-        r, g, b = image.getpixel((tempX, tempY))
-    tempX -= 3
-    tempY -= 3
-    pyautogui.moveTo(x, y)
-    pyautogui.mouseDown()
+    tempX -= 1
+    tempY -= 1
+    r, g, b = image.getpixel((tempX - 3, tempY - 3))
+    if r < 10 and g < 10 and b < 10: 
+        tempX -= 3
+        tempY -= 3
+    edgeX, edgeY = tempX, tempY
+
+    # Drag to bottom right edge from top left edge, then scribble.
     pyautogui.moveTo(tempX, tempY)
     tempX += 2 + random.randint(0, 5)
     tempY += 2 + random.randint(0, 5)
@@ -393,9 +376,64 @@ def drawDiagonals(x, y, image):
     tempX -= 2 + random.randint(0, 5)
     tempY -= 2 + random.randint(0, 5)
     pyautogui.moveTo(tempX, tempY)
-    pyautogui.mouseUp()
+    pyautogui.moveTo(edgeX, edgeY)
+
+    # Drag to original pixel from bottom right edge.
+    pyautogui.moveTo(x, y)
     tempX = x
     tempY = y
+
+    # Find top right edge.
+    r, g, b = image.getpixel((tempX, tempY))
+    while r < 10 and g < 10 and b < 10:
+        tempX += 2
+        tempY -= 2
+        r, g, b = image.getpixel((tempX, tempY))
+    tempX -= 1
+    tempY += 1
+    r, g, b = image.getpixel((tempX - 3, tempY + 3))
+    if r < 10 and g < 10 and b < 10: 
+        tempX -= 3
+        tempY += 3
+    edgeX, edgeY = tempX, tempY
+
+    # Drag to top right edge from original pixel, then scribble.
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.moveTo(edgeX, edgeY)
+
+    # Find bottom left edge.
+    r, g, b = image.getpixel((tempX, tempY))
+    while r < 10 and g < 10 and b < 10:
+        tempX -= 2
+        tempY += 2
+        r, g, b = image.getpixel((tempX, tempY))
+    tempX += 1
+    tempY -= 1
+    r, g, b = image.getpixel((tempX + 3, tempY - 3))
+    if r < 10 and g < 10 and b < 10: 
+        tempX += 3
+        tempY -= 3
+    edgeX, edgeY = tempX, tempY
+
+    # Drag to bottom left edge from top right edge, then scribble.
+    pyautogui.moveTo(tempX, tempY)
+    tempX -= 2 + random.randint(0, 3)
+    tempY += 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    tempX += 2 + random.randint(0, 3)
+    tempY -= 2 + random.randint(0, 3)
+    pyautogui.moveTo(tempX, tempY)
+    pyautogui.moveTo(edgeX, edgeY)
+
+    # Drag back to original pixel from bottom left edge, then release mouse.
+    pyautogui.moveTo(x, y)
+    pyautogui.mouseUp()
 
 
 main()
