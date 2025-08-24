@@ -1,6 +1,8 @@
 ### Description
 The program uses a drawing tool to trace over black pixels detected in an image window. 
+
 ---
+
 ### Setup Requirements
 The program was made only to be used with the following:
 - Windows 11
