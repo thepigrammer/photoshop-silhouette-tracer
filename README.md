@@ -1,5 +1,5 @@
 ### Description
-The program uses a drawing tool to trace over black pixels detected in an image window. 
+The program uses a drawing tool to trace over black pixels detected in an image window in Adobe Photoshop Elements. Multiple image tabs can be traced with one run of the program. The program also includes some other features to assist with modifying multiple tabs.
 
 ---
 
